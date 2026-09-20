@@ -1,0 +1,95 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: taskforge
+      POSTGRES_USER: taskforge
+      POSTGRES_PASSWORD: taskforge
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taskforge -d taskforge"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: ./backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      DATABASE_URL: postgresql+psycopg://taskforge:taskforge@postgres:5432/taskforge
+      REDIS_URL: redis://redis:6379/0
+      CORS_ORIGINS: http://localhost:3000
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  worker:
+    build: ./backend
+    command: python -m app.worker
+    environment:
+      DATABASE_URL: postgresql+psycopg://taskforge:taskforge@postgres:5432/taskforge
+      REDIS_URL: redis://redis:6379/0
+      WORKER_POLL_SECONDS: "0.4"
+      DEFAULT_LEASE_SECONDS: "30"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  worker2:
+    build: ./backend
+    command: python -m app.worker
+    environment:
+      DATABASE_URL: postgresql+psycopg://taskforge:taskforge@postgres:5432/taskforge
+      REDIS_URL: redis://redis:6379/0
+      WORKER_POLL_SECONDS: "0.4"
+      DEFAULT_LEASE_SECONDS: "30"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  redis_data:

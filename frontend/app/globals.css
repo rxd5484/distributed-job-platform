@@ -1,0 +1,36 @@
+:root { font-family: Inter, system-ui, sans-serif; background:#071019; color:#eaf2f8; }
+* { box-sizing:border-box; }
+body { margin:0; background:radial-gradient(circle at 10% 0%,#12354a 0,transparent 28%),#071019; }
+main { width:min(1300px,calc(100% - 36px)); margin:auto; padding:48px 0; }
+.hero { max-width:900px; }
+.eyebrow,.kicker { color:#76c7f2; font-size:12px; font-weight:800; letter-spacing:.16em; }
+h1 { font-size:72px; margin:12px 0; letter-spacing:-.05em; }
+.hero p { color:#9eb3bf; font-size:18px; }
+.flow { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:20px; }
+.flow span { background:#0c1a24; border:1px solid #234052; padding:8px 12px; border-radius:999px; }
+.stats { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin:28px 0 18px; }
+.stats div,.card { background:#0a1720; border:1px solid #1d3443; border-radius:16px; }
+.stats div { padding:16px; }
+.stats span { color:#7d94a2; font-size:12px; text-transform:uppercase; }
+.stats strong { display:block; font-size:28px; margin-top:6px; }
+.grid { display:grid; grid-template-columns:.9fr 1.4fr; gap:18px; align-items:start; }
+.card { padding:24px; }
+label { display:block; color:#a7b9c4; font-size:13px; margin-bottom:15px; }
+input,select,textarea { width:100%; margin-top:7px; padding:11px; border-radius:9px; border:1px solid #294757; background:#07141d; color:#eaf2f8; }
+textarea { font-family:monospace; }
+.triple { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+button { width:100%; padding:12px; border:0; border-radius:9px; font-weight:800; background:#68c2f3; color:#04141e; cursor:pointer; }
+.joblist { display:grid; gap:12px; }
+.job { padding:15px; background:#07151e; border:1px solid #1e3747; border-radius:12px; }
+.jobtop { display:flex; justify-content:space-between; align-items:start; }
+.job h3 { margin:0 0 4px; }
+.job code,.job p { color:#79909d; font-size:12px; }
+.pill { padding:5px 8px; border-radius:999px; background:#1a3341; font-size:10px; font-weight:800; }
+.completed { color:#6de0a9; }
+.processing { color:#84c8ff; }
+.retrying { color:#ffb174; }
+.dead_letter { color:#ff9298; }
+.joberror { color:#e99a9d !important; }
+pre { background:#061018; padding:10px; border-radius:8px; overflow:auto; color:#acd4ea; font-size:11px; }
+.error { color:#ff9ca1; }
+@media(max-width:900px){ .stats{grid-template-columns:repeat(2,1fr)} .grid{grid-template-columns:1fr} h1{font-size:54px} }
