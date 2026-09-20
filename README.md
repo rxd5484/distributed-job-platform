@@ -156,10 +156,7 @@ CANCELLED
 FAILED_TO_QUEUE
 ```
 
-## Resume bullet examples
 
-- Built a distributed job-processing platform using FastAPI, Redis, PostgreSQL, Docker, and Next.js with priority scheduling, idempotency, retries, execution timeouts, and dead-letter handling.
-- Implemented multi-worker fault recovery using Redis processing leases and delayed retries, enabling jobs to recover after worker failures and scale horizontally.
 
 ## License
 
